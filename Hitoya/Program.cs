@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,15 +7,15 @@ using System.Threading.Tasks;
 
 namespace Hitoya
 {
+    public enum PowerTokens
+    { Life, Chaos, Death, Rotate }
+
     class Program
     {
 
-        public enum PowerTokens
-        { AddToken, Chaos, Death, Rotate}
-
         public static bool gameOver = false;
         static Player playerOne, playerTwo;
-        public static Card[] Deck;
+        public ArrayList Deck;
         public static Player activePlayer;
 
         static void Main(string[] args)
@@ -24,6 +25,14 @@ namespace Hitoya
 
             while (gameOver == false)
             {
+
+                //Determine whose turn it is
+
+                //Initiate that player's turn
+
+                //Make changes to the player's hands or the playing field
+
+                //Switch to the next player's turn
 
             }
 
@@ -58,7 +67,15 @@ namespace Hitoya
         /// </summary>
         private static void LoadCards()
         {
+
+            
+
             //Load the cards from their appropriate files
+
+            /* 
+             TODO: Learn how serialization works in order to learn how to retrieve data. Relevant link: 
+             https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/serialization/index
+             */
 
             //Shuffle the deck
         }
