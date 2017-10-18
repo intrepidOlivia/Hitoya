@@ -89,9 +89,9 @@ namespace Hitoya
 
         }
 
-        public void AddToken()
+        public void AddToken(TokenTypes tokenType)
         {
-
+            TokenInventory.Add(new PowerToken(tokenType));
         }
 
         public void Discard(int discardCount)

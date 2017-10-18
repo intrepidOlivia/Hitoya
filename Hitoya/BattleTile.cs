@@ -24,12 +24,6 @@ namespace Hitoya
         public enum AttackTypes
         { one, two, three, four, five, six, spear, shield }
 
-        /// <summary>
-        /// Indicating the type of marker that may populate the battle tile
-        /// </summary>
-        public enum MarkerTypes
-        { blank, counter, chaos, death, rotate }
-
         const int NORTHINDEX = 0;
         const int EASTINDEX = 1;
         const int SOUTHINDEX = 2;
