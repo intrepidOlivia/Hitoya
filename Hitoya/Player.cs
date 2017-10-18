@@ -67,16 +67,22 @@ namespace Hitoya
         /// <summary>
         /// The player draws a card from the game's Deck
         /// </summary>
-        public void DrawCard()
+        public void DrawCard(int drawCount)
         {
-            Hand.Add(Game.Deck[Game.Deck.Count - 1]);           //Retrieves the last card in the deck
-            Game.Deck.Remove(Game.Deck[Game.Deck.Count - 1]);   //Removes that card from the deck
+            for (int i = 0; i < drawCount; i++)
+            {
+                Hand.Add(Game.Deck[Game.Deck.Count - 1]);           //Retrieves the last card in the deck
+                Game.Deck.Remove(Game.Deck[Game.Deck.Count - 1]);   //Removes that card from the deck
 
-            DisplayCard();
+                DisplayCard();
+            }
+
+            
         }
 
         /// <summary>
-        /// Displays the newly-drawn card to the player
+        /// Displays the newly-drawn card to the player.
+        /// Requires user input to exit the function.
         /// </summary>
         private void DisplayCard()
         {
@@ -86,6 +92,23 @@ namespace Hitoya
         public void AddToken()
         {
 
+        }
+
+        public void Discard(int discardCount)
+        {
+            Card[] selectedCards = new Card[discardCount];
+
+            //Display the UI segment that allows the player to discard cards of their choosing
+
+            //Retrieve user input
+
+            //Change length of selectedCards if user chooses not to discard full amount
+
+            for (int i = 0; i < selectedCards.Length; i++)
+            {
+                Hand.Remove(selectedCards[i]);
+            }
+            
         }
 
     }

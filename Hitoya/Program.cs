@@ -174,6 +174,8 @@ namespace Hitoya
             switch (selectedCard.Name)
             {
                 case "Isaac":
+                    activePlayer.Discard(1);
+                    activePlayer.DrawCard(4);
                     break;
                 case "Meng":
                     break;
