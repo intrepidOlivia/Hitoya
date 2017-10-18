@@ -18,7 +18,7 @@ namespace Hitoya
         public ArrayList Deck;
         public static Player activePlayer;
 
-        static void Main(string[] args)
+        void Main(string[] args)
         {
 
             InitiateGame();    
@@ -27,8 +27,8 @@ namespace Hitoya
             {
 
                 //Determine whose turn it is
-
                 //Initiate that player's turn
+                PlayRound(activePlayer);
 
                 //Make changes to the player's hands or the playing field
 
@@ -41,7 +41,7 @@ namespace Hitoya
         /// <summary>
         /// Initiates the game variables, loads the cards, and creates the two Player objects.
         /// </summary>
-        static void InitiateGame()
+        void InitiateGame()
         {
             gameOver = false;
             playerOne = new Player();
@@ -79,5 +79,144 @@ namespace Hitoya
 
             //Shuffle the deck
         }
+
+        private void PlayRound(Player activePlayer)
+        {
+            Card cardToPlay;
+
+            //Receive player's input about what card they want to play
+            cardToPlay = SelectedCard();
+
+            if (cardToPlay.GetType() == typeof(BattleTile))
+            {
+                //play battle tile
+                PlayBattleTile((BattleTile)cardToPlay);
+            }
+            else if (cardToPlay.GetType() == typeof(CharacterCard))
+            {
+                //play character card
+                PlayCharacterCard((CharacterCard)cardToPlay);
+            }
+
+        }
+
+        /// <summary>
+        /// Placeholder method for retrieving user input of card selection
+        /// </summary>
+        /// <returns></returns>
+        private Card SelectedCard()
+        {
+            return SelectedCard();
+        }
+
+        /// <summary>
+        /// Performs battle tile activity after user has selected the spot to place the tile.
+        /// </summary>
+        /// <param name="selectedTile"></param>
+        private void PlayBattleTile(BattleTile selectedTile)
+        {
+            //Player selects spot to place tile
+
+            //Player selects any battle tokens
+
+            //Perform attack, or perform token
+
+            //Finish up any remaining token actions (add counters?)
+
+            //Check to see if the game is over
+
+            //switch active player
+        }
+
+        /// <summary>
+        /// User selects where on the field to place the tile, from the available options
+        /// </summary>
+        private void PlaceTile()
+        {
+
+        }
+
+        /// <summary>
+        /// The active card performs an attack in all cardinal directions
+        /// </summary>
+        private void PerformAttack(BattleTile activeCard)
+        {
+            //Determine which directions are defeated
+
+        }
+
+        /// <summary>
+        /// Performs an attack by the provided Attacking Card in the given direction
+        /// </summary>
+        /// <param name="direction"></param>
+        /// <param name="attackingCard"></param>
+        private void SecondaryAttack(Cardinal direction, BattleTile attackingCard)
+        {
+
+            //Check to see if any existing power token is activated (i.e. Rotate)
+            if (attackingCard.ActiveToken == "ROTATE")
+            {
+
+            }
+
+            //Determines whether the attack will be successful. If it is, call this method again with the next card
+
+            //Capture/exchanges any counters
+
+        }
+
+        /// <summary>
+        /// Performs any action based on the character.
+        /// </summary>
+        /// <param name="selectedCard"></param>
+        private void PlayCharacterCard(CharacterCard selectedCard)
+        {
+            switch (selectedCard.Name)
+            {
+                case "Isaac":
+                    break;
+                case "Meng":
+                    break;
+                case "Evan":
+                    break;
+                case "Cecil":
+                    break;
+                case "Pierre":
+                    break;
+                case "Sidney":
+                    break;
+                case "Lisa":
+                    break;
+                case "Duncan":
+                    break;
+                case "Steve":
+                    break;
+                case "Burt":
+                    break;
+                case "CAIIT":
+                    break;
+                case "Ella":
+                    break;
+                case "Ada":
+                    break;
+                case "Hoshi":
+                    break;
+                case "Jay":
+                    break;
+                case "John":
+                    break;
+                case "Abe":
+                    break;
+                case "Pete":
+                    break;
+                case "Raymond":
+                    break;
+                case "Daisy":
+                    break;
+            }
+                
+
+        }
+
     }
 }

@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Hitoya
 {
+
+    public enum Cardinal { N, E, S, W };
+
     /// <summary>
     /// A battle tile object. Each of the battle tile's four edges is labeled with a value, indicating its offensive/defensive capabilities.
     /// A battle tile may only be placed adjacent to another battle tile.
@@ -36,6 +39,7 @@ namespace Hitoya
         bool occupied;
         public bool isOccupyable;
         Player occupiedBy;
+        String token = "";
 
         public BattleTile()
         {
@@ -85,6 +89,12 @@ namespace Hitoya
             get { return Edges[WESTINDEX].AttackValue; }
         }
 
+        public String ActiveToken
+        {
+            get { return token; }
+            set { token = value; }
+        }
+
         /// <summary>
         /// Places a counter on the tile
         /// </summary>
@@ -112,16 +122,34 @@ namespace Hitoya
         }
 
         /// <summary>
-        /// Contains a cardinal direction and an attack value, defining the card's directional attributes
+        /// Rotates the battle tile
         /// </summary>
-        private class CardEdge
+        public void Rotate()
+        {
+            //Retrieve user input about whether to rotate clockwise or counterclockwise
+
+            //Reassign the x and y values of each card edge (cardinal directions will remain the same)
+
+
+        }
+
+        public static void PlaceTile(BattleTile placedCard, CardEdge adjacent)
         {
 
-            public enum Cardinal { N, E, S, W }
+        }
+
+        /// <summary>
+        /// Contains a cardinal direction and an attack value, defining the card's directional attributes
+        /// The cardinal directions are static. North may face left, right, up, or down (xneg, xpos, yneg, ypos). 
+        /// The x and y coordinates of each card edge are determined by the Orientation value
+        /// </summary>
+        public class CardEdge
+        {
 
             Cardinal cDir;
             AttackTypes attack;
-
+            public enum orientation { xpos, xneg, ypos, yneg }
+            orientation rotationDir;
 
             public CardEdge(String dir, AttackTypes type)
             {
@@ -149,13 +177,78 @@ namespace Hitoya
                 get { return cDir; }
             }
 
+            public orientation Rotation
+            {
+                get { return rotationDir; }
+            }
+
             public AttackTypes AttackValue
             {
                 get { return attack; }
             }
 
-            
+
+            ///// <summary>
+            ///// Contains information about what the x and y values of the card edges are.
+            ///// </summary>
+            //public struct Orientation
+            //{
+            //    private enum rotation { xpos, xneg, ypos, yneg };
+
+            //    int xcoord, ycoord;
+
+            //    /// <summary>
+            //    /// Coordinates are in format [x, y]
+            //    /// </summary>
+            //    Dictionary<int, int> nCoords, eCoords, sCoords, wCoords;
+
+            //    /// <summary>
+            //    /// 
+            //    /// </summary>
+            //    /// <param name="edge">The edge of the card being placed</param>
+            //    /// <param name="adjacent">The adjacent orientation that the card is being placed against</param>
+            //    public Orientation(CardEdge edge, Orientation adjacent)
+            //    {
+
+            //        switch (edge.Direction)
+            //        {
+            //            case Cardinal.N:
+            //                break;
+            //            case Cardinal.E:
+            //                break;
+            //            case Cardinal.S:
+            //                break;
+            //            case Cardinal.W:
+            //                break;
+            //        }
+
+            //    }
+
+            //    public Dictionary<int, int> North
+            //    {
+            //        get { return nCoords; }
+            //    }
+
+            //    public Dictionary<int, int> East
+            //    {
+            //        get { return eCoords; }
+            //    }
+
+            //    public Dictionary<int, int> South
+            //    {
+            //        get { return sCoords; }
+            //    }
+
+            //    public Dictionary<int, int> West
+            //    {
+            //        get { return wCoords; }
+            //    }
+
+            //}
+
         }
+
+        
 
     }
 

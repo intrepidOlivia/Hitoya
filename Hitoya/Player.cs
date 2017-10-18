@@ -18,6 +18,7 @@ namespace Hitoya
         Program Game;
         String playerName;
         public ArrayList Hand;
+        public ArrayList TokenInventory;
         int captured;       //How many enemy counters the player has captured
         int currentScore;
         Colors color;
@@ -78,6 +79,11 @@ namespace Hitoya
         /// Displays the newly-drawn card to the player
         /// </summary>
         private void DisplayCard()
+        {
+
+        }
+
+        public void AddToken()
         {
 
         }
