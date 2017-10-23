@@ -15,7 +15,8 @@ namespace Hitoya
 
         public static bool gameOver = false;
         static Player playerOne, playerTwo;
-        public ArrayList Deck;
+        public Stack Deck;
+        public Stack CharDeck;
         public static Player activePlayer;
 
         void Main(string[] args)
@@ -27,6 +28,7 @@ namespace Hitoya
             {
 
                 //Determine whose turn it is
+
                 //Initiate that player's turn
                 PlayRound(activePlayer);
 
@@ -60,6 +62,19 @@ namespace Hitoya
             String input = "";
 
             return input;
+        }
+
+        /// <summary>
+        /// Returns an array of all participating players.
+        /// </summary>
+        /// <returns></returns>
+        public Player[] GetPlayers()
+        {
+            Player[] pList = new Player[2];
+            pList[0] = playerOne;
+            pList[1] = playerTwo;
+
+            return pList;
         }
 
         /// <summary>

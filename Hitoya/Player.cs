@@ -15,10 +15,11 @@ namespace Hitoya
     /// </summary>
     class Player
     {
-        Program Game;
+        public Program Game;
         String playerName;
         public ArrayList Hand;
-        public ArrayList TokenInventory;
+        public ArrayList TokenInventory;    //How many power tokens the player currently holds
+        public ArrayList CharHand;
         int captured;       //How many enemy counters the player has captured
         int currentScore;
         Colors color;
@@ -71,13 +72,24 @@ namespace Hitoya
         {
             for (int i = 0; i < drawCount; i++)
             {
-                Hand.Add(Game.Deck[Game.Deck.Count - 1]);           //Retrieves the last card in the deck
-                Game.Deck.Remove(Game.Deck[Game.Deck.Count - 1]);   //Removes that card from the deck
-
-                DisplayCard();
+                Hand.Add(Game.Deck.Pop());           //Retrieves the last card in the deck
+                DisplayCard();      //TODO: Change DisplayCard() to display all cards drawn at once
             }
 
             
+        }
+
+        /// <summary>
+        /// The player draws a specified number of character cards
+        /// </summary>
+        /// <param name="drawCount"></param>
+        public void DrawCharCard(int drawCount)
+        {
+            for (int i = 0; i < drawCount; i++)
+            {
+                CharHand.Add(Game.CharDeck.Pop());
+                DisplayCard();
+            }
         }
 
         /// <summary>
@@ -110,6 +122,7 @@ namespace Hitoya
             }
             
         }
+
 
     }
 
