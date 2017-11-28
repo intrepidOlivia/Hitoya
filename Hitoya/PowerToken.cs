@@ -26,6 +26,32 @@ namespace Hitoya
         }
 
         /// <summary>
+        /// Creates a power token based on the provided string;
+        /// </summary>
+        /// <param name="tokenTypeStr"></param>
+        public PowerToken(String tokenTypeStr)
+        {
+            switch (tokenTypeStr)
+            {
+                case "Life":
+                    type = TokenTypes.life;
+                    break;
+                case "Chaos":
+                    type = TokenTypes.chaos;
+                    break;
+                case "Death":
+                    type = TokenTypes.death;
+                    break;
+                case "Rotate":
+                    type = TokenTypes.rotate;
+                    break;
+                default:
+                    type = TokenTypes.blank;
+                    break;
+            }
+        }
+
+        /// <summary>
         /// Prompts the player to select a power token
         /// </summary>
         public static PowerToken SelectToken()

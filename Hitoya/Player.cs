@@ -72,7 +72,7 @@ namespace Hitoya
         {
             for (int i = 0; i < drawCount; i++)
             {
-                Hand.Add(Game.Deck.Pop());           //Retrieves the last card in the deck
+                Hand.Add(Game.TileDeck.Pop());           //Retrieves the last card in the deck
                 DisplayCard();      //TODO: Change DisplayCard() to display all cards drawn at once
             }
 

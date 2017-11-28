@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
+using System.Xml;
 
 namespace Hitoya
 {
@@ -12,36 +12,47 @@ namespace Hitoya
     class Card
     {
 
+
         public Card()
         {
             //Load card information from file
 
-            /* 
-             TODO: Learn how serialization works in order to learn how to retrieve data. Relevant link: 
-             https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/serialization/index
-             */
+            
         }
 
-        private Card[] ReadFromFile(String filename)
+        public static void LoadGameFile(Program game)
         {
-            Card[] cards;
+            XmlDocument file = new XmlDocument();
+            file.Load("cards.xml");
+
+            XmlNodeList CharCards = file.GetElementsByTagName("CharCard");
+            FillCharDeck(game, CharCards);
+
+            XmlNodeList BattleTiles = file.GetElementsByTagName("BattleTile");
 
 
-            try
+        }
+
+        /// <summary>
+        /// Fills the game's character deck from the values in the XML node list
+        /// </summary>
+        /// <param name="game">The current game</param>
+        /// <param name="CharCards">The list of XML nodes containing character card information</param>
+        private static void FillCharDeck(Program game, XmlNodeList CharCards)
+        {
+            Stack<CharacterCard> deck = game.CharDeck;
+
+            for (int i = 0; i < CharCards.Count; i++)
             {
-                Stream stream = File.Open(filename, FileMode.Open);
-                BinaryFormatter formatter = new BinaryFormatter();
-                formatter.Deserialize(stream);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Error: " + e.Message);
-                return null;
+                deck.Push(new CharacterCard(CharCards[i]));
+                Console.WriteLine(CharCards[i].Name + " added to Character Deck");
             }
 
+        }
 
+        private void FillTileDeck(Program game, XmlNodeList BattleTiles)
+        {
 
-            return cards;
         }
 
     }

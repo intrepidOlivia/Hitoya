@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,12 +19,12 @@ namespace Hitoya
         public Stack<CharacterCard> CharDeck;
         public static Player activePlayer;
 
-        public static void Main(string[] args)
+        static void Main(string[] args)
         {
 
             Program Game = new Program();
 
-            Game.InitiateGame();
+            Game.InitiateGame();    
 
             while (gameOver == false)
             {
@@ -54,7 +54,7 @@ namespace Hitoya
             Card.LoadGameFile(this);
 
             Console.WriteLine("The game character deck now has " + CharDeck.Count + " cards in it.");
-
+            
             //Shuffle the decks
 
         }
