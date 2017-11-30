@@ -44,8 +44,9 @@ namespace Hitoya
 
             for (int i = 0; i < CharCards.Count; i++)
             {
-                deck.Push(new CharacterCard(CharCards[i]));
-                Console.WriteLine(CharCards[i].Name + " added to Character Deck");
+                CharacterCard newcard = new CharacterCard(CharCards[i]);
+                deck.Push(newcard);
+                Console.WriteLine(newcard.Name + " added to Character Deck");
             }
 
         }

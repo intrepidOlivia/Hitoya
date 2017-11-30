@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace Hitoya
 {
-
-    public enum Cardinal { N, E, S, W };
 
     /// <summary>
     /// A battle tile object. Each of the battle tile's four edges is labeled with a value, indicating its offensive/defensive capabilities.
@@ -24,13 +23,15 @@ namespace Hitoya
         public enum AttackTypes
         { one, two, three, four, five, six, spear, shield }
 
-        const int NORTHINDEX = 0;
-        const int EASTINDEX = 1;
-        const int SOUTHINDEX = 2;
-        const int WESTINDEX = 3;
+        //const int NORTHINDEX = 0;
+        //const int EASTINDEX = 1;
+        //const int SOUTHINDEX = 2;
+        //const int WESTINDEX = 3;
 
-        CardEdge[] Edges;
+        CardEdge[] Edges = new CardEdge[4];
         bool occupied;
+        PlayingField.Slot Location;
+
         public bool isOccupyable;
         Player occupiedBy;
         String token = "";
@@ -38,49 +39,6 @@ namespace Hitoya
         public BattleTile()
         {
             //Load battle tile information from file (performed in the superclass)
-        }
-
-        /// <summary>
-        /// Constructor for initial game data saving
-        /// </summary>
-        /// <param name="nValue">North edge value</param>
-        /// <param name="eValue">East edge value</param>
-        /// <param name="sValue">South edge value</param>
-        /// <param name="wValue">West edge value</param>
-        /// <param name="occupyable">Is tile occupyable by default</param>
-        public BattleTile(AttackTypes nValue, AttackTypes eValue, AttackTypes sValue, AttackTypes wValue, bool occupyable)
-        {
-
-            Edges = new CardEdge[4];
-
-            Edges[0] = new CardEdge("N", nValue);
-            Edges[1] = new CardEdge("E", eValue);
-            Edges[2] = new CardEdge("S", sValue);
-            Edges[3] = new CardEdge("W", wValue);
-
-            isOccupyable = occupyable;
-
-        }
-
-
-        public AttackTypes NorthValue
-        {
-            get { return Edges[NORTHINDEX].AttackValue; }
-        }
-
-        public AttackTypes EastValue
-        {
-            get { return Edges[EASTINDEX].AttackValue; }
-        }
-
-        public AttackTypes SouthValue
-        {
-            get { return Edges[SOUTHINDEX].AttackValue; }
-        }
-
-        public AttackTypes WestValue
-        {
-            get { return Edges[WESTINDEX].AttackValue; }
         }
 
         public String ActiveToken
@@ -127,118 +85,116 @@ namespace Hitoya
 
         }
 
-        public static void PlaceTile(BattleTile placedCard, CardEdge adjacent)
+        public static void PlaceTile(BattleTile placedCard, PlayingField.Slot placedSlot)
         {
+            //Place into PlayingField Slot
+            placedCard.Location = placedSlot;
+
+            //Retrieve information about which edges are placed where
+
+            for (int i = 0; i < placedCard.Edges.Length; i++)
+            {
+
+                //Place each edge. Submit either a slot or an edge as an argument depending on whether adjacent slot is empty or not
+
+            }
 
         }
 
         /// <summary>
-        /// Contains a cardinal direction and an attack value, defining the card's directional attributes
-        /// The cardinal directions are static. North may face left, right, up, or down (xneg, xpos, yneg, ypos). 
-        /// The x and y coordinates of each card edge are determined by the Orientation value
+        /// Contains an attack value and an opposite edge (on the same tile)
+        /// Also contains an Adjacent Slot and and Adjacent Edge (after being placed)
         /// </summary>
         public class CardEdge
         {
 
-            Cardinal cDir;
+            BattleTile parentTile;
             AttackTypes attack;
-            public enum orientation { xpos, xneg, ypos, yneg }
-            orientation rotationDir;
+            public PlayingField.Slot AdjacentSlot;
+            public BattleTile.CardEdge AdjacentEdge, OppositeEdge;
+            
+            //public enum orientation { xpos, xneg, ypos, yneg }
+            //orientation rotationDir;
 
-            public CardEdge(String dir, AttackTypes type)
+
+            public CardEdge(XmlNode xmlnode, BattleTile parent)
             {
-                switch (dir)
+                switch (xmlnode.Name)
                 {
-                    case "N":
-                        cDir = Cardinal.N;
+                    case "1":
+                        attack = AttackTypes.one;
                         break;
-                    case "E":
-                        cDir = Cardinal.E;
+                    case "2":
+                        attack = AttackTypes.two;
                         break;
-                    case "S":
-                        cDir = Cardinal.S;
+                    case "3":
+                        attack = AttackTypes.three;
                         break;
-                    case "W":
-                        cDir = Cardinal.W;
+                    case "4":
+                        attack = AttackTypes.four;
+                        break;
+                    case "5":
+                        attack = AttackTypes.five;
+                        break;
+                    case "6":
+                        attack = AttackTypes.six;
+                        break;
+                    case "spear":
+                        attack = AttackTypes.spear;
+                        break;
+                    case "shield":
+                        attack = AttackTypes.shield;
                         break;
                 }
 
-                attack = type;
+                parentTile = parent;
             }
 
-            public Cardinal Direction
+            /// <summary>
+            /// Assigns a card edge to its connecting Slot. Call this PlaceEdge method if adjacent slot is empty
+            /// </summary>
+            public void PlaceEdge(PlayingField.Slot slot)
             {
-                get { return cDir; }
+                OppositeEdge = GetOppositeEdge();
+                AdjacentSlot = slot;
             }
 
-            public orientation Rotation
+            /// <summary>
+            /// Assigns a card edge to its connecting Edge. Call this PlaceEdge method if adjacent slot contains a battle tile
+            /// </summary>
+            public void PlaceEdge(CardEdge adjEdge)
             {
-                get { return rotationDir; }
+                AdjacentEdge = adjEdge;
+                OppositeEdge = GetOppositeEdge();
+
+                AdjacentSlot = adjEdge.parentTile.Location;
+                AdjacentEdge.AdjacentEdge = this;           //The adjacent of my adjacent is me
+            }
+
+            /// <summary>
+            /// Determines the opposite edge of this edge, based on the parent tile's configuration
+            /// </summary>
+            private CardEdge GetOppositeEdge()
+            {
+                switch (Array.IndexOf(parentTile.Edges, this))
+                {
+                    case 0:
+                        return parentTile.Edges[2];
+                    case 1:
+                        return parentTile.Edges[3];
+                    case 2:
+                        return parentTile.Edges[0];
+                    case 3:
+                        return parentTile.Edges[1];
+                }
+
+                return null;
             }
 
             public AttackTypes AttackValue
             {
                 get { return attack; }
             }
-
-
-            ///// <summary>
-            ///// Contains information about what the x and y values of the card edges are.
-            ///// </summary>
-            //public struct Orientation
-            //{
-            //    private enum rotation { xpos, xneg, ypos, yneg };
-
-            //    int xcoord, ycoord;
-
-            //    /// <summary>
-            //    /// Coordinates are in format [x, y]
-            //    /// </summary>
-            //    Dictionary<int, int> nCoords, eCoords, sCoords, wCoords;
-
-            //    /// <summary>
-            //    /// 
-            //    /// </summary>
-            //    /// <param name="edge">The edge of the card being placed</param>
-            //    /// <param name="adjacent">The adjacent orientation that the card is being placed against</param>
-            //    public Orientation(CardEdge edge, Orientation adjacent)
-            //    {
-
-            //        switch (edge.Direction)
-            //        {
-            //            case Cardinal.N:
-            //                break;
-            //            case Cardinal.E:
-            //                break;
-            //            case Cardinal.S:
-            //                break;
-            //            case Cardinal.W:
-            //                break;
-            //        }
-
-            //    }
-
-            //    public Dictionary<int, int> North
-            //    {
-            //        get { return nCoords; }
-            //    }
-
-            //    public Dictionary<int, int> East
-            //    {
-            //        get { return eCoords; }
-            //    }
-
-            //    public Dictionary<int, int> South
-            //    {
-            //        get { return sCoords; }
-            //    }
-
-            //    public Dictionary<int, int> West
-            //    {
-            //        get { return wCoords; }
-            //    }
-
-            //}
 
         }
 

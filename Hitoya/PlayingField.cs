@@ -9,17 +9,19 @@ namespace Hitoya
     /// <summary>
     /// The playing field on which battle tiles will be placed.
     /// This object contains location data for all placed cards.
-    /// The field has 16 open slots, labeled A - P.
+    /// 
     /// </summary>
     static class PlayingField
     {
 
-        public enum rotation { xpos, xneg, ypos, yneg }
+        //public enum rotation { xpos, xneg, ypos, yneg }
         //public static BattleTile A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P;
         //public static BattleTile[] Field = new BattleTile[] { A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P };
         public static Slot[,] Field = new Slot[4,4];
 
-
+        /// <summary>
+        /// Sets up the playing field with empty slots
+        /// </summary>
         static PlayingField()
         {
 
@@ -27,7 +29,7 @@ namespace Hitoya
             {
                 for (int j = 0; j < Field.GetLength(0); j++)
                 {
-                    Field[i, j] = null;
+                    Field[i, j] = new Slot(i, j);
                 }
             }
         }
@@ -35,22 +37,39 @@ namespace Hitoya
         /// <summary>
         /// Places a battle tile in a slot.
         /// </summary>
-        public static void PlaceTile(BattleTile tile, int x, int y)
+        public static void PlaceTile(BattleTile tile, int y, int x)
         {
-            Field[x, y].PlacedTile = tile;
+            Field[y, x].Tile = tile;
         }
 
         /// <summary>
-        /// A slot may contain a Battle Tile. A Battle Tile must be assigned with a North Direction
+        /// A slot may contain a Battle Tile.
         /// </summary>
         public class Slot
         {
             BattleTile placed;
-            rotation nDir;
+            bool isEmpty;
+            int x, y;
 
-            public BattleTile PlacedTile
+            public Slot(int row, int col)
+            {
+                placed = null;
+                isEmpty = true;
+                y = row;
+                x = col;
+            }
+
+            public int[] location
+            {
+                get { return new int[] { y, x }; }
+            }
+
+            public BattleTile Tile
             { get { return placed; }
-                set { placed = value; }
+                set {
+                    placed = value;
+                    isEmpty = false;
+                }
             }
 
             public rotation NorthDirection

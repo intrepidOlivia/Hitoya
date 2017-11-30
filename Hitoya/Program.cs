@@ -15,8 +15,8 @@ namespace Hitoya
 
         public static bool gameOver = false;
         static Player playerOne, playerTwo;
-        public Stack<BattleTile> TileDeck;
-        public Stack<CharacterCard> CharDeck;
+        public Stack<BattleTile> TileDeck = new Stack<BattleTile>();
+        public Stack<CharacterCard> CharDeck = new Stack<CharacterCard>();
         public static Player activePlayer;
 
         public static void Main(string[] args)

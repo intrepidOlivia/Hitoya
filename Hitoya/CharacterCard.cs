@@ -11,7 +11,8 @@ namespace Hitoya
     public enum SpecialTypes
     {
         DrawCharCard,
-        ClearTokens
+        ClearTokens,
+        SelectToken
     }
 
     /// <summary>
@@ -23,8 +24,8 @@ namespace Hitoya
 
         Program Game;
         public int Draws, Discards;
-        public List<PowerToken> TokensGet;
-        public List<SpecialTypes> Specials;
+        public List<PowerToken> TokensGet = new List<PowerToken>();
+        public List<SpecialTypes> Specials = new List<SpecialTypes>();
         public String Name, FlavorText;
 
         //private Dictionary<String, int> ModifyHand;
@@ -47,28 +48,31 @@ namespace Hitoya
             {
                 if (elements[i].Name == "Draw")
                 {
-                    int.TryParse(elements[i].Value, out Draws);
+                    int.TryParse(elements[i].InnerText, out Draws);
                 }
 
                 if (elements[i].Name == "Discard")
                 {
-                    int.TryParse(elements[i].Value, out Discards);
+                    int.TryParse(elements[i].InnerText, out Discards);
                 }
 
                 if (elements[i].Name == "AddToken")
                 {
-                    TokensGet.Add(new PowerToken(elements[i].Value));
+                    TokensGet.Add(new PowerToken(elements[i].InnerText));
                 }
 
                 if (elements[i].Name == "Special")
                 {
-                    switch (elements[i].Value)
+                    switch (elements[i].InnerText)
                     {
                         case "DrawCharCard":
                             Specials.Add(SpecialTypes.DrawCharCard);
                             break;
                         case "ClearTokens":
                             Specials.Add(SpecialTypes.ClearTokens);
+                            break;
+                        case "SelectToken":
+                            Specials.Add(SpecialTypes.SelectToken);
                             break;
                     }
                 }
