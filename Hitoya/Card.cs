@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Xml;
+using System.Diagnostics;
 
 namespace Hitoya
 {
@@ -28,8 +29,9 @@ namespace Hitoya
             XmlNodeList CharCards = file.GetElementsByTagName("CharCard");
             FillCharDeck(game, CharCards);
 
-            XmlNodeList BattleTiles = file.GetElementsByTagName("BattleTile");
 
+            XmlNodeList BattleTiles = file.GetElementsByTagName("BattleTile");
+            FillTileDeck(game, BattleTiles);
 
         }
 
@@ -40,19 +42,65 @@ namespace Hitoya
         /// <param name="CharCards">The list of XML nodes containing character card information</param>
         private static void FillCharDeck(Program game, XmlNodeList CharCards)
         {
-            Stack<CharacterCard> deck = game.CharDeck;
+            Stack<Card> deck = game.CharDeck;
+            List<Card> charPile = new List<Card>();
 
             for (int i = 0; i < CharCards.Count; i++)
             {
                 CharacterCard newcard = new CharacterCard(CharCards[i]);
-                deck.Push(newcard);
-                Console.WriteLine(newcard.Name + " added to Character Deck");
+                charPile.Add(newcard);
+                //deck.Push(newcard);
             }
+
+            //Shuffle the deck
+            ShuffleDeck(deck, charPile);
+        }
+
+        private static void FillTileDeck(Program game, XmlNodeList BattleTiles)
+        {
+
+            Stack<Card> deck = game.TileDeck;
+            List<Card> tilePile = new List<Card>();
+
+            for (int i = 0; i < BattleTiles.Count; i++)
+            {
+                BattleTile newcard = new BattleTile(BattleTiles[i]);
+                tilePile.Add(newcard);
+                //deck.Push(newcard);
+            }
+
+            //Shuffle the deck
+            ShuffleDeck(deck, tilePile);
 
         }
 
-        private void FillTileDeck(Program game, XmlNodeList BattleTiles)
+        /// <summary>
+        /// Shuffles the pile of cards and adds them to the deck.
+        /// </summary>
+        private static void ShuffleDeck(Stack<Card> deck, List<Card> cardPile)
         {
+
+            shuffleCard(new Random(), cardPile, deck);
+
+        }
+
+        /// <summary>
+        /// Selects a card at random from the provided List, pushes it onto the deck Stack, and removes that card from the List.
+        /// Returns true when cardPile has been reduced to 0 items.
+        /// </summary>
+        private static bool shuffleCard(Random random, List<Card> cardPile, Stack<Card> deck)
+        {
+
+            if (cardPile.Count <= 0)
+            {
+                return true;
+            }
+
+            int index = random.Next(0, cardPile.Count);
+            deck.Push(cardPile[index]);
+            cardPile.RemoveAt(index);
+
+            return shuffleCard(random, cardPile, deck);
 
         }
 

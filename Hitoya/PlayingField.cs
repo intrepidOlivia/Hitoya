@@ -72,8 +72,7 @@ namespace Hitoya
                 }
             }
 
-            public rotation NorthDirection
-            { get { return nDir; } }
+
 
 
         }

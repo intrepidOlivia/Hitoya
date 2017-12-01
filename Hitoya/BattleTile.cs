@@ -28,7 +28,7 @@ namespace Hitoya
         //const int SOUTHINDEX = 2;
         //const int WESTINDEX = 3;
 
-        CardEdge[] Edges = new CardEdge[4];
+        public CardEdge[] Edges = new CardEdge[4];
         bool occupied;
         PlayingField.Slot Location;
 
@@ -36,9 +36,13 @@ namespace Hitoya
         Player occupiedBy;
         String token = "";
 
-        public BattleTile()
+        public BattleTile(XmlNode tile)
         {
-            //Load battle tile information from file (performed in the superclass)
+            XmlNodeList edges = tile.ChildNodes;
+            for (int i = 0; i < edges.Count; i++)
+            {
+                Edges[i] = new CardEdge(edges[i], this);
+            }
         }
 
         public String ActiveToken
@@ -80,7 +84,7 @@ namespace Hitoya
         {
             //Retrieve user input about whether to rotate clockwise or counterclockwise
 
-            //Reassign the x and y values of each card edge (cardinal directions will remain the same)
+            //Reassign the adjacent values of each card edge
 
 
         }
@@ -116,10 +120,12 @@ namespace Hitoya
             //public enum orientation { xpos, xneg, ypos, yneg }
             //orientation rotationDir;
 
-
+           /// <summary>
+           /// Creates a new Card Edge and assigns it an attack value based on the XML information.
+           /// </summary>
             public CardEdge(XmlNode xmlnode, BattleTile parent)
             {
-                switch (xmlnode.Name)
+                switch (xmlnode.InnerText)
                 {
                     case "1":
                         attack = AttackTypes.one;

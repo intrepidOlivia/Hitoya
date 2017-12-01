@@ -15,8 +15,8 @@ namespace Hitoya
 
         public static bool gameOver = false;
         static Player playerOne, playerTwo;
-        public Stack<BattleTile> TileDeck = new Stack<BattleTile>();
-        public Stack<CharacterCard> CharDeck = new Stack<CharacterCard>();
+        public Stack<Card> TileDeck = new Stack<Card>();
+        public Stack<Card> CharDeck = new Stack<Card>();
         public static Player activePlayer;
 
         public static void Main(string[] args)
@@ -54,6 +54,7 @@ namespace Hitoya
             Card.LoadGameFile(this);
 
             Console.WriteLine("The game character deck now has " + CharDeck.Count + " cards in it.");
+            Console.WriteLine("The battle tile deck now has " + TileDeck.Count + " cards in it.");
 
             //Shuffle the decks
 
@@ -148,25 +149,25 @@ namespace Hitoya
 
         }
 
-        /// <summary>
-        /// Performs an attack by the provided Attacking Card in the given direction
-        /// </summary>
-        /// <param name="direction"></param>
-        /// <param name="attackingCard"></param>
-        private void SecondaryAttack(Cardinal direction, BattleTile attackingCard)
-        {
+        ///// <summary>
+        ///// Performs an attack by the provided Attacking Card in the given direction
+        ///// </summary>
+        ///// <param name="direction"></param>
+        ///// <param name="attackingCard"></param>
+        //private void SecondaryAttack(Cardinal direction, BattleTile attackingCard)
+        //{
 
-            //Check to see if any existing power token is activated (i.e. Rotate)
-            if (attackingCard.ActiveToken == "ROTATE")
-            {
+        //    //Check to see if any existing power token is activated (i.e. Rotate)
+        //    if (attackingCard.ActiveToken == "ROTATE")
+        //    {
 
-            }
+        //    }
 
-            //Determines whether the attack will be successful. If it is, call this method again with the next card
+        //    //Determines whether the attack will be successful. If it is, call this method again with the next card
 
-            //Capture/exchanges any counters
+        //    //Capture/exchanges any counters
 
-        }
+        //}
 
         /// <summary>
         /// Performs any action based on the character.
