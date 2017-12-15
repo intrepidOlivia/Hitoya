@@ -9,18 +9,19 @@ using System.Diagnostics;
 
 namespace Hitoya
 {
-    [Serializable()]
     class Card
     {
 
 
         public Card()
         {
-            //Load card information from file
 
             
         }
 
+        /// <summary>
+        /// Loads the XML file that contains information for the character cards and battle tiles.
+        /// </summary>
         public static void LoadGameFile(Program game)
         {
             XmlDocument file = new XmlDocument();
@@ -29,9 +30,10 @@ namespace Hitoya
             XmlNodeList CharCards = file.GetElementsByTagName("CharCard");
             FillCharDeck(game, CharCards);
 
-
             XmlNodeList BattleTiles = file.GetElementsByTagName("BattleTile");
             FillTileDeck(game, BattleTiles);
+
+            
 
         }
 

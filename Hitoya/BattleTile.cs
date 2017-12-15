@@ -21,7 +21,7 @@ namespace Hitoya
         /// Indicating the value of a battle tile's attack function
         /// </summary>
         public enum AttackTypes
-        { one, two, three, four, five, six, spear, shield }
+        { one, two, three, four, five, six, spear, shield, blank }
 
         //const int NORTHINDEX = 0;
         //const int EASTINDEX = 1;
@@ -42,6 +42,18 @@ namespace Hitoya
             for (int i = 0; i < edges.Count; i++)
             {
                 Edges[i] = new CardEdge(edges[i], this);
+            }
+        }
+
+        /// <summary>
+        /// Creates a blank tile
+        /// </summary>
+        public BattleTile()
+        {
+            isOccupyable = false;
+            for (int i = 0; i < 4; i++)
+            {
+                Edges[i] = new CardEdge(this);
             }
         }
 
@@ -154,6 +166,15 @@ namespace Hitoya
                 }
 
                 parentTile = parent;
+            }
+
+            /// <summary>
+            /// Creates a Card Edge with a blank attack value
+            /// </summary>
+            public CardEdge(BattleTile parent)
+            {
+                parentTile = parent;
+                attack = AttackTypes.blank;
             }
 
             /// <summary>

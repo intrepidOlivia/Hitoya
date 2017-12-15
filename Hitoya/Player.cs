@@ -17,9 +17,9 @@ namespace Hitoya
     {
         public Program Game;
         String playerName;
-        public ArrayList Hand;
+        public ArrayList TileHand = new ArrayList();
         public ArrayList TokenInventory;    //How many power tokens the player currently holds
-        public ArrayList CharHand;
+        public ArrayList CharHand = new ArrayList();
         int captured;       //How many enemy counters the player has captured
         int currentScore;
         Colors color;
@@ -33,6 +33,11 @@ namespace Hitoya
         {
             playerName = nameInput;
             Game = game;
+        }
+
+        public Player(String nameInput)
+        {
+            playerName = nameInput;
         }
 
         public String Name
@@ -72,7 +77,7 @@ namespace Hitoya
         {
             for (int i = 0; i < drawCount; i++)
             {
-                Hand.Add(Game.TileDeck.Pop());           //Retrieves the last card in the deck
+                TileHand.Add(Game.TileDeck.Pop());           //Retrieves the last card in the deck
                 DisplayCard();      //TODO: Change DisplayCard() to display all cards drawn at once
             }
 
@@ -101,9 +106,20 @@ namespace Hitoya
 
         }
 
+        /// <summary>
+        /// Adds a token of the type provided.
+        /// </summary>
         public void AddToken(TokenTypes tokenType)
         {
             TokenInventory.Add(new PowerToken(tokenType));
+        }
+
+        /// <summary>
+        /// Adds the provided token to the player's token inventory.
+        /// </summary>
+        public void AddToken(PowerToken token)
+        {
+            TokenInventory.Add(token);
         }
 
         public void Discard(int discardCount)
@@ -118,7 +134,7 @@ namespace Hitoya
 
             for (int i = 0; i < selectedCards.Length; i++)
             {
-                Hand.Remove(selectedCards[i]);
+                TileHand.Remove(selectedCards[i]);
             }
             
         }

@@ -17,7 +17,9 @@ namespace Hitoya
         static Player playerOne, playerTwo;
         public Stack<Card> TileDeck = new Stack<Card>();
         public Stack<Card> CharDeck = new Stack<Card>();
-        public static Player activePlayer;
+        public Player activePlayer;
+
+        private delegate void RoundCallBack(Card cardToPlay);
 
         public static void Main(string[] args)
         {
@@ -29,14 +31,13 @@ namespace Hitoya
             while (gameOver == false)
             {
 
-                //Determine whose turn it is
-
-                //Initiate that player's turn
-                //PlayRound(activePlayer);
+                //Initiate the active player's turn
+                Game.StartRound(Game.activePlayer);
 
                 //Make changes to the player's hands or the playing field
 
                 //Switch to the next player's turn
+
 
             }
 
@@ -48,16 +49,53 @@ namespace Hitoya
         void InitiateGame()
         {
             gameOver = false;
-            playerOne = new Player();
-            playerTwo = new Player();
+            playerOne = new Player("playerOne", this);
+            playerTwo = new Player("playerTwo", this);
 
+            //Loads the game file with card information
             Card.LoadGameFile(this);
 
-            Console.WriteLine("The game character deck now has " + CharDeck.Count + " cards in it.");
-            Console.WriteLine("The battle tile deck now has " + TileDeck.Count + " cards in it.");
+            //Set up the playing field:
+            //Add blank tile to first slot
+            BattleTile.PlaceTile(new BattleTile(), PlayingField.Field[0, 0]);
 
-            //Shuffle the decks
+            //Deal hands to players
+            DealPlayerHands(playerOne, playerTwo);
 
+            //Select the first player
+            activePlayer = playerOne;
+
+        }
+
+        /// <summary>
+        /// Each player eventually gets three character cards
+        /// </summary>
+        private void DealPlayerHands(Player playerOne, Player playerTwo)
+        {
+            //TODO: Set it up the proper way, dealing six character cards to each player and then swapping between them until each player has three cards
+
+            for (int i = 0; i < 3; i++)
+            {
+                playerOne.CharHand.Add(this.CharDeck.Pop());
+                playerTwo.CharHand.Add(this.CharDeck.Pop());
+            }
+
+            TestCharHands(playerOne);
+            TestCharHands(playerTwo);
+
+        }
+
+        //Used for testing
+        private void TestCharHands(Player player)
+        {
+            String cardString = "";
+            Console.WriteLine(player.Name + "'s hand of character cards:");
+            for (int i = 0; i < player.CharHand.Count; i++)
+            {
+                CharacterCard thiscard = (CharacterCard)player.CharHand[i];
+                cardString += thiscard.Name + ", ";
+            }
+            Console.WriteLine(cardString);
         }
 
         /// <summary>
@@ -84,13 +122,37 @@ namespace Hitoya
             return pList;
         }
 
-        private void PlayRound(Player activePlayer)
+        private void StartRound(Player activePlayer)
         {
+
+            //Determine whether player will draw a card or play a character card
+            //Temporary
+            Console.WriteLine(activePlayer.Name + ": Would you like to draw a card or play a character card? Type D for Draw or C for Character card.");
+            string result = Console.ReadLine();
+
+            switch (result)
+            {
+                case "D":
+                    //Player will draw a card
+                    activePlayer.TileHand.Add(TileDeck.Pop());
+
+                    //Display Tile Hand to player
+
+                    break;
+                case "C":
+                    //Player will play a character card
+                    CharacterCard.PlayCharacterCard(activePlayer, SelectCard(activePlayer));
+                    break;
+            }
+
             Card cardToPlay;
 
-            //Receive player's input about what card they want to play
-            cardToPlay = SelectedCard();
+            
 
+        }
+
+        private void PlayCard(Card cardToPlay)
+        {
             if (cardToPlay.GetType() == typeof(BattleTile))
             {
                 //play battle tile
@@ -101,16 +163,29 @@ namespace Hitoya
                 //play character card
                 PlayCharacterCard((CharacterCard)cardToPlay);
             }
-
         }
 
         /// <summary>
         /// Placeholder method for retrieving user input of card selection
         /// </summary>
         /// <returns></returns>
-        private Card SelectedCard()
+        private CharacterCard SelectCard(Player activePlayer)
         {
-            return SelectedCard();
+            //Retrieve card input from the Player
+            Console.WriteLine("Please enter the name of character you'd like to play:");
+            String charstring = Console.ReadLine();
+
+            foreach (CharacterCard c in activePlayer.CharHand)
+            {
+                if (c.Name == charstring)
+                {
+                    Console.WriteLine("You selected card " + c.Name);
+                    return c;
+                }
+            }
+
+            Console.WriteLine("Character Card was not correctly selected.");
+            return null;
         }
 
         /// <summary>

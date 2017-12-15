@@ -89,14 +89,48 @@ namespace Hitoya
         public static void PlayCharacterCard(Player activePlayer, CharacterCard playCard)
         {
             //Handle draws
+            for (int i = 0; i < playCard.Draws; i++)
+            {
+                activePlayer.TileHand.Add(activePlayer.Game.TileDeck.Pop());
+            }
 
             //Handle discards
+            activePlayer.Discard(playCard.Discards);
 
             //Handle token acquisition
+            for (int i = 0; i < playCard.TokensGet.Count; i++)
+            {
+                activePlayer.AddToken(playCard.TokensGet[i]);
+            }
 
             //Handle any specials
+            playCard.PlaySpecials();
+
+            //Discard this character card from the player's hand
+            activePlayer.CharHand.Remove(playCard);
             
         }
+
+        public void PlaySpecials()
+        {
+            for (int i = 0; i < Specials.Count; i++)
+            {
+                switch (Specials[i])
+                {
+                    case SpecialTypes.DrawCharCard:
+                        //Handle drawcard
+                        break;
+                    case SpecialTypes.ClearTokens:
+                        //handle clearingtypes
+                        break;
+                    case SpecialTypes.SelectToken:
+                        //Handle selecttoken
+                        break;
+                }
+
+            }
+        }
+
 
     }
 }
